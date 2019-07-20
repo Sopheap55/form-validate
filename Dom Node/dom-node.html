@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.5/css/mdb.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <!-- <form action="" id="frm">
+        <label for="" id="usr">username</label><br>
+        <input type="text" name="" id="username"><br>
+        <label for="" id="sname">Schoolname</label><br>
+        <input type="text" name="" id="school"><br>
+        <label for="" id="tel">Contact</label><br>
+        <input type="text" name="" id="contact"><br>
+        <input type="submit">
+    </form> -->
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#basicExampleModal">
+        Add New Record
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- <label for="" id="usermsg">Username</label><br>
+                    <input type="text" name="" id="username" placeholder="Username"><br>
+                    <label for="" id="smsg">Schoolname</label><br>
+                    <input type="text" name="" id="school" placeholder="Schoolname"><br>
+                    <label for="" id="phonemsg">Contact</label><br>
+                    <input type="text" name="" id="phone" placeholder="Contact"><br> -->
+                    <label for="" id="usr">username</label><br>
+                    <input type="text" name="" id="username"><br>
+                    <label for="" id="sname">Schoolname</label><br>
+                    <input type="text" name="" id="school"><br>
+                    <label for="" id="tel">Contact</label><br>
+                    <input type="text" name="" id="contact"><br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="save">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table">
+        <thead class="grey lighten-2">
+            <tr>
+                <th scope="col">Username</th>
+                <th scope="col">SchoolName</th>
+                <th scope="col">Contact</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+        </tbody>
+    </table>
+
+
+    <script>
+        let save = document.getElementById('save');
+        save.addEventListener('click', function (e) {
+            e.preventDefault()
+            let username = document.getElementById('username').value;
+            let school = document.getElementById('school').value;
+            let contact = document.getElementById('contact').value;
+            let info = {
+                username: username,
+                school: school,
+                contact: contact
+            }
+            // addToBody(info);
+            let patt = /[^a-z]/gi;
+            let pattSchool = /[^a-z \s]/gi;
+            let pattContact = /[^0-9]/gi;
+
+            let msgResult = document.getElementById('usr');
+            let sResult = document.getElementById('sname');
+            let cMsg = document.getElementById('tel');
+            
+            let uisValidate;
+            let sisValidate;
+            let cisValidate;
+            
+
+            //valiate on username text field
+            if (username.match(patt) != null) {
+                msgResult.innerHTML = "*user input number or other character beside a-z"
+                msgResult.style.color = 'red'
+                uisValidate = false;
+            }
+
+            //condition for correct all do condition and Output data
+            if (username.match(patt) == null) {
+                msgResult.innerHTML = "*correct username"
+                msgResult.style.color = 'blue'
+                // h2.innerHTML += `UserName: ${username + "<br>"}`;
+                uisValidate = true;
+            }
+            //end
+            if (username == "" || username == null) {
+                msgResult.innerHTML = "*cannot blank"
+                msgResult.style.color = 'red'
+                uisValidate = false;
+            }
+            //validate school name text field
+            if (school.match(pattSchool) != null) {
+                sResult.innerHTML = "*incorrect school name"
+                sResult.style.color = 'red'
+                sisValidate = false;
+            }
+            if (school.match(pattSchool) == null) {
+                sResult.innerHTML = "*correct school name"
+                sResult.style.color = 'blue'
+                // h2.innerHTML += `SchoolName: ${sname + "<br>"}`;
+                sisValidate = true;
+            }
+            if (school == "" || sname == null) {
+                sResult.innerHTML = "*cannot blank school"
+                sResult.style.color = 'red'
+                sisValidate = false;
+            }
+            //validate contact text field
+            if (contact.length < 9 || contact.length > 10) {
+                cMsg.innerHTML = "*invalid contact"
+                cMsg.style.color = 'red';
+                cisValidate = false;
+            }
+            if (contact.match(pattContact) == null) {
+                cMsg.innerHTML = "*Contact Can't blank"
+                cMsg.style.color = 'red';
+                cisValidate = false;
+            }
+            if (contact[0] == '0' && contact.match(pattContact) == null) {
+                cMsg.innerHTML = "*correct contact"
+                cMsg.style.color = 'blue'
+                cisValidate = true;
+            }
+            if(uisValidate && sisValidate && cisValidate){
+                addToBody(info);
+            }
+
+            
+            function addToBody(info) {
+                let row = document.createElement('tr'); //<tr></tr>
+                let column1 = document.createElement('td'); //<td></td>
+                let column2 = document.createElement('td')
+                let column3 = document.createElement('td')
+                let column4 = document.createElement('td')
+
+                let b = document.createElement('button');
+                b.setAttribute("onclick", "removeInfo(this)")//This current object
+                b.className = "btn btn-outline-primary waves-effect";
+                //<button class="btn btn-outline-primary waves-effect"></button>
+
+                //---------------------text Node
+                let user = document.createTextNode(info.username);
+                let sname = document.createTextNode(info.school);
+                let contact = document.createTextNode(info.contact);
+                let title = document.createTextNode('Delete');
+
+                //------------------------append child
+                column1.appendChild(user);
+                column2.appendChild(sname);
+                column3.appendChild(contact);
+                b.appendChild(title)
+                column4.appendChild(b);
+
+                row.appendChild(column1);
+                row.appendChild(column2);
+                row.appendChild(column3);
+                row.appendChild(column4);
+                let tbody = document.getElementsByTagName('tbody')[0];
+                tbody.appendChild(row);
+
+            }
+            function removeInfo(btn) {
+                let r = confirm("Do you want to delete?");
+                if (r == true) {
+                    let parent = btn.parentNode.parentNode.parentNode
+                    let currentRow = btn.parentNode.parentNode
+                    parent.removeChild(currentRow)
+                }
+            }
+        })
+    </script>
+    <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.5/js/mdb.min.js"></script>
+</body>
+
+</html>
